@@ -1,172 +1,70 @@
-# Proyecto Node & Express Web App
+# Proyecto Node & Express - Parte 2 Módulo 7
 
 ## Descripción
-Este proyecto corresponde a la **Parte 1 del Proyecto Integrador (Módulo 6)** del curso de desarrollo backend.
-
-La aplicación fue desarrollada utilizando **Node.js y Express.js**, permitiendo levantar un servidor web, gestionar rutas y registrar accesos utilizando archivos planos.
-
-El objetivo de esta etapa es construir la base del backend que posteriormente será extendida con base de datos, ORM y una API REST segura.
-
----
+Aplicación backend desarrollada con Node.js, Express y MySQL para gestionar usuarios mediante operaciones CRUD. El proyecto permite consultar, crear, actualizar y eliminar usuarios desde rutas HTTP, manteniendo la conexión a una base de datos relacional y aplicando validaciones básicas.
 
 ## Tecnologías utilizadas
-
 - Node.js
-- Express.js
-- Dotenv
+- Express
+- MySQL
+- dotenv
 - Nodemon
-- File System (fs)
-
----
+- Postman
+- XAMPP / phpMyAdmin
 
 ## Estructura del proyecto
-proyecto-node-express
-│
-├── controllers
-│ └── statusController.js
-│
-├── routes
-│ └── statusRoutes.js
-│
-├── middlewares
-│ └── logger.js
-│
-├── public
-│ └── index.html
-│
-├── logs
-│ └── log.txt
-│
-├── index.js
-├── package.json
-├── .env
-└── README.md
----
+- `config/` → configuración de conexión a base de datos
+- `controllers/` → lógica de las rutas
+- `routes/` → definición de endpoints
+- `middlewares/` → middleware logger
+- `logs/` → archivo de registros
+- `public/` → archivos estáticos
 
-## Instalación del proyecto
+## Configuración
+1. Clonar el repositorio.
+2. Instalar dependencias:
+   ```bash
+   npm install
+   Crear archivo .env con:PORT=3000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=proyecto_modulo7
+DB_NAME=proyecto_modulo7
+Iniciar XAMPP y activar Apache y MySQL.
+Crear la base de datos proyecto_modulo7 y la tabla usuarios.
 
-1. Clonar el repositorio desde GitHub
-
-
-git clone <TU-REPOSITORIO>
-
-
-2. Entrar a la carpeta del proyecto
-
-
-cd proyecto-node-express
-
-
-3. Instalar dependencias
-
-
-npm install
-
-
----
-
-## Ejecución del servidor
-
-Modo normal:
-
-
-npm start
-
-
-Modo desarrollo (recomendado):
-
+Ejecutar el proyecto:
 
 npm run dev
+Tabla utilizada
+CREATE TABLE usuarios (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(100),
+  email VARCHAR(100),
+  password VARCHAR(100)
+);
+Rutas implementadas
+GET /usuarios → listar usuarios
+POST /usuarios → crear usuario
+PUT /usuarios/:id → actualizar usuario
+DELETE /usuarios/:id → eliminar usuario
+Pruebas realizadas
 
+Se realizaron pruebas con Postman para:
 
-El servidor se ejecutará en:
+lectura de usuarios
+creación de usuarios
+actualización de usuarios
+eliminación de usuarios
+validación cuando un usuario no existe
+Decisiones técnicas
 
+Se utilizó mysql2 para conectarse a MySQL por su integración sencilla con Node.js.
+Las credenciales de conexión se guardaron en variables de entorno con dotenv para evitar exponer datos sensibles en el código.
+Se aplicaron validaciones para comprobar existencia del usuario antes de actualizar o eliminar.
+Se excluyó la contraseña en la respuesta de la ruta GET para no exponer información sensible.
 
-http://localhost:3000
+Autor
 
-
----
-
-## Rutas disponibles
-
-### Ruta principal
-
-
-GET /
-
-
-Respuesta:
-
-
-Servidor funcionando correctamente
-
-
----
-
-### Estado del servidor
-
-
-GET /status
-
-
-Respuesta:
-
-
-{
-"status": "Servidor activo"
-}
-
-
----
-
-## Persistencia de datos
-
-Se implementó un sistema simple de registro de accesos utilizando archivos planos.
-
-Cada acceso al servidor queda registrado en:
-
-
-logs/log.txt
-
-
-Ejemplo de registro:
-
-
-Acceso: 14/03/2026 01:30 - Ruta: /
-
-
----
-
-## Variables de entorno
-
-El puerto del servidor se configura mediante **dotenv**.
-
-Archivo `.env`
-
-
-PORT=3000
-
-
----
-
-## Justificación técnica
-
-Se eligió **Node.js** junto con **Express.js** por su eficiencia para crear servidores web rápidos y escalables.
-
-La estructura modular del proyecto separa responsabilidades en:
-
-- routes → manejo de rutas
-- controllers → lógica de negocio
-- middlewares → funciones intermedias
-- public → archivos estáticos
-- logs → persistencia simple
-
-Esta arquitectura facilita la escalabilidad del proyecto para futuras etapas donde se integrará una base de datos y una API REST.
-
----
-
-## Autor
-
-Proyecto desarrollado por:
-
-**Carmen Colipe Millaman**
+Carmen Colipe Millaman

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usuarios</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Lista de usuarios</h1>
+    <p>Datos obtenidos desde la base de datos</p>
+  </header>
+
+  <nav>
+    <a href="/">Inicio</a>
+    <a href="/status.html">Estado</a>
+    <a href="/usuarios.html">Usuarios</a>
+  </nav>
+
+  <main>
+    <h2>Usuarios registrados</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody id="tabla-usuarios">
+        <tr>
+          <td colspan="3">Cargando usuarios...</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p id="mensaje-error" class="mensaje"></p>
+  </main>
+
+  <div class="footer">
+    Proyecto académico - Carmen Colipe Millaman
+  </div>
+
+  <script>
+    async function cargarUsuarios() {
+      try {
+        const respuesta = await fetch('/usuarios');
+        const usuarios = await respuesta.json();
+
+        const tabla = document.getElementById('tabla-usuarios');
+        const mensajeError = document.getElementById('mensaje-error');
+
+        tabla.innerHTML = '';
+        mensajeError.textContent = '';
+
+        if (!usuarios.length) {
+          tabla.innerHTML = '<tr><td colspan="3">No hay usuarios registrados.</td></tr>';
+          return;
+        }
+
+        usuarios.forEach(usuario => {
+          const fila = document.createElement('tr');
+          fila.innerHTML = `
+            <td>${usuario.id}</td>
+            <td>${usuario.nombre}</td>
+            <td>${usuario.email}</td>
+          `;
+          tabla.appendChild(fila);
+        });
+      } catch (error) {
+        document.getElementById('mensaje-error').textContent =
+          'No se pudieron cargar los usuarios.';
+      }
+    }
+
+    cargarUsuarios();
+  </script>
+</body>
+</html>
