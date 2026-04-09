@@ -1,70 +1,83 @@
-# Proyecto Node & Express - Parte 2 Módulo 7
+# Proyecto Node & Express - Parte 3 Módulo 8
 
 ## Descripción
-Aplicación backend desarrollada con Node.js, Express y MySQL para gestionar usuarios mediante operaciones CRUD. El proyecto permite consultar, crear, actualizar y eliminar usuarios desde rutas HTTP, manteniendo la conexión a una base de datos relacional y aplicando validaciones básicas.
+API RESTful desarrollada con Node.js, Express y MySQL. El proyecto expone la lógica del sistema mediante endpoints REST, incorpora autenticación con JWT, subida de archivos y protección de rutas.
 
 ## Tecnologías utilizadas
 - Node.js
 - Express
 - MySQL
+- mysql2
 - dotenv
-- Nodemon
+- jsonwebtoken
+- multer
 - Postman
 - XAMPP / phpMyAdmin
 
-## Estructura del proyecto
-- `config/` → configuración de conexión a base de datos
-- `controllers/` → lógica de las rutas
-- `routes/` → definición de endpoints
-- `middlewares/` → middleware logger
-- `logs/` → archivo de registros
-- `public/` → archivos estáticos
-
-## Configuración
-1. Clonar el repositorio.
-2. Instalar dependencias:
-   ```bash
+## Instalación
+1. Clonar el repositorio
+2. Ejecutar:
    npm install
-   Crear archivo .env con:PORT=3000
+3. Configurar archivo `.env`
+4. Iniciar XAMPP y activar Apache y MySQL
+5. Ejecutar:
+   npm run dev
+
+## Variables de entorno
+```env
+PORT=3000
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=
 DB_NAME=proyecto_modulo7
-DB_NAME=proyecto_modulo7
-Iniciar XAMPP y activar Apache y MySQL.
-Crear la base de datos proyecto_modulo7 y la tabla usuarios.
+JWT_SECRET=clave_secreta_123
+JWT_EXPIRES=1h
+Endpoints
+POST /login
+POST /usuarios
+GET /usuarios (protegida)
+PUT /usuarios/:id (protegida)
+DELETE /usuarios/:id (protegida)
+POST /upload (protegida)
+Autenticación
 
-Ejecutar el proyecto:
+Para autenticarse se debe consumir:
 
-npm run dev
-Tabla utilizada
-CREATE TABLE usuarios (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  nombre VARCHAR(100),
-  email VARCHAR(100),
-  password VARCHAR(100)
-);
-Rutas implementadas
-GET /usuarios → listar usuarios
-POST /usuarios → crear usuario
-PUT /usuarios/:id → actualizar usuario
-DELETE /usuarios/:id → eliminar usuario
-Pruebas realizadas
+POST /login
 
-Se realizaron pruebas con Postman para:
+Body:
 
-lectura de usuarios
-creación de usuarios
-actualización de usuarios
-eliminación de usuarios
-validación cuando un usuario no existe
+{
+  "email": "admin@email.com",
+  "password": "1234"
+}
+
+La respuesta entrega un token JWT que debe enviarse en las rutas protegidas mediante el header:
+
+Authorization: Bearer TU_TOKEN
+Subida de archivos
+
+La ruta POST /upload permite subir imágenes JPG, JPEG, PNG y archivos PDF.
+Los archivos se almacenan en la carpeta uploads/.
+
+Para probar la subida:
+
+usar form-data
+clave: archivo
+tipo: File
+Estructura del proyecto
+config/ → configuración de base de datos
+controllers/ → lógica de negocio
+routes/ → endpoints
+middlewares/ → logger y autenticación JWT
+public/ → vistas HTML
+uploads/ → archivos subidos
 Decisiones técnicas
-
-Se utilizó mysql2 para conectarse a MySQL por su integración sencilla con Node.js.
-Las credenciales de conexión se guardaron en variables de entorno con dotenv para evitar exponer datos sensibles en el código.
-Se aplicaron validaciones para comprobar existencia del usuario antes de actualizar o eliminar.
-Se excluyó la contraseña en la respuesta de la ruta GET para no exponer información sensible.
-
+Se separaron rutas, controladores y middlewares para mejorar organización y escalabilidad.
+Se protegieron rutas sensibles para evitar acceso no autorizado.
+Se utilizó JWT para autenticación basada en tokens.
+Se utilizó multer para manejar subida de archivos de forma controlada.
+Se mantuvo la conexión a MySQL para persistencia de datos.
 Autor
 
 Carmen Colipe Millaman
